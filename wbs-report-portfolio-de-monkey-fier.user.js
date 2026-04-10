@@ -2,7 +2,7 @@
 // @name          wbs-report-portfolio-de-monkey-fier
 // @match         *://ecampus.wbstraining.de/*
 // @run-at        document-end
-// @version       1.0.1
+// @version       1.0.2
 // @icon          https://ecampus.wbstraining.de/Customizing/global/skin/wbs718skin/images/HeaderIconResponsive.svg
 // @downloadURL   https://github.com/AaronKuehne/wbs-report-portfolio-de-monkey-fier/raw/refs/heads/master/wbs-report-portfolio-de-monkey-fier.user.js
 // ==/UserScript==
