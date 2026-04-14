@@ -231,7 +231,7 @@
             if (number != 0 && number != 8 && number != 10) {
                 const ueLabel = document.querySelector(`[for="${ueInput.getAttribute("id")}"]`);
                 ueLabel.innerHTML += " ⚠️";
-                ueLabel.title = ueInput.title += "⚠️ St/UE sind nicht 0, 8 oder 10. ";
+                ueLabel.title = ueInput.title += "⚠️ Ist TN in Teilzeit? St/UE sind nicht 0, 8 oder 10. ";
                 hasAnyWarnings = true;
             }
         }
@@ -243,12 +243,12 @@
         const totalNumber = parseInt(totalUEInput.value);
         if (totalNumber % 8 != 0 && totalNumber % 10 != 0) {
             totalUELabel.innerHTML += " ⚠️";
-            totalUELabel.title = totalUEInput.title += "⚠️ St/UE sind nicht 0, und nicht durch 8 oder 10 teilbar. ";
+            totalUELabel.title = totalUEInput.title += "⚠️ Ist TN in Teilzeit? St/UE sind nicht 0, und nicht durch 8 oder 10 teilbar. ";
             hasAnyWarnings = true;
         }
         if (totalNumber != accTimes) {
             totalUELabel.innerHTML += " ⚠️";
-            totalUELabel.title = totalUEInput.title += "⚠️ St/UE Summe stimmt nicht überein. ";
+            totalUELabel.title = totalUEInput.title += "⚠️ St/UE Summe stimmt nicht mit Einträgen überein. ";
             hasAnyWarnings = true;
         }
 
