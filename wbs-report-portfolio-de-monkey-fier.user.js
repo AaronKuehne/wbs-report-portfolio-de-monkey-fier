@@ -2,7 +2,7 @@
 // @name          wbs-report-portfolio-de-monkey-fier
 // @match         *://ecampus.wbstraining.de/*
 // @run-at        document-end
-// @version       1.0.3
+// @version       1.1.0
 // @icon          https://ecampus.wbstraining.de/Customizing/global/skin/wbs718skin/images/HeaderIconResponsive.svg
 // @downloadURL   https://github.com/AaronKuehne/wbs-report-portfolio-de-monkey-fier/raw/refs/heads/master/wbs-report-portfolio-de-monkey-fier.user.js
 // ==/UserScript==
@@ -20,8 +20,6 @@
         "Bitte Abschnitt benennen.",
         "Bitte min. 3 Einträge á Tag.",
         "FPAs bitte etwas ausführen.",
-        "Bitte ganze Tage oder 0 St/UE eintragen.",
-        "Für entschuldigte Tage bitte 0 St/UE eintragen.",
         "Bitte keine Einträge am Wochenende.",
         "Danke :)",
     ];
@@ -73,29 +71,30 @@
         let acceptPos = 2;
         let rejectPos = 4;
 
-        let getAllLinkTextsAtPopupPosition = (position) => `tbody > tr > .std:nth-child(7) > .btn-group > #ilAdvSelListTable_asl_ > li:nth-child(${position}) > a`;
-        let getSelectorForRow = (row) => `tbody > tr:nth-child(${row}) > .std:nth-child(7) > .btn-group > #ilAdvSelListTable_asl_ > li:nth-child(${viewPos}) > a`;
+        let getLinkAtPopupPosition = (position) => `.dropdown li:nth-child(${position}) button.btn-link`;
+        let getViewLinkAtRow = (row) => `tbody tr:nth-child(${row}) ${getLinkAtPopupPosition(viewPos)}`;
 
         // block accidential actions
-        document.querySelectorAll(`${getAllLinkTextsAtPopupPosition(acceptPos)}, ${getAllLinkTextsAtPopupPosition(rejectPos)}`).forEach(a => {
-            a.href = "javascript:void(0)";
-            a.style.textDecoration = "line-through";
-            a.title = "Hier wurde für Dich ein Aus-Versehen-Klick deaktiviert 💚"
+        document.querySelectorAll(`${getLinkAtPopupPosition(acceptPos)}, ${getLinkAtPopupPosition(rejectPos)}`).forEach(btn => {
+            btn.disabled = true;
+            btn.style.textDecoration = "line-through";
+            btn.title = "Hier wurde für Dich ein Aus-Versehen-Klick deaktiviert 💚"
         });
 
         // automated opening
         let nextRow = 1;
-        let rowIfExists = (row) => {
-            const e = document.querySelector(getSelectorForRow(nextRow));
+        let viewButtonAtRowIfExists = (row) => {
+            const e = document.querySelector(getViewLinkAtRow(nextRow));
             if (!e) alert("Alle Zeilen auf dieser Seite wurden bearbeitet! \nReaload tut gut 😉");
             return e;
         };
+        let getViewLinkFromViewButton = (btn) => btn.getAttribute('data-action')
         let openNextRowNewTabButton = undefined;
         let openNextRowNewTabButtonTitle = "⤴️";
         let openNextRowNewTab = () => {
-            const rowElement = rowIfExists(nextRow);
-            if (!rowElement) return;
-            const nextUrl = rowElement.href;
+            const btn = viewButtonAtRowIfExists(nextRow);
+            if (!btn) return;
+            const nextUrl = getViewLinkFromViewButton(btn);
             nextRow++;
             openNextRowNewTabButton.value = `${openNextRowNewTabButtonTitle} (${nextRow})`;
             window.open(nextUrl, '_blank');
@@ -103,9 +102,9 @@
 
         let openNextRowHereButtonTitle = "▶️";
         let openNextRowHere = () => {
-            const rowElement = rowIfExists(nextRow);
-            if (!rowElement) return;
-            const nextUrl = rowElement.href;
+            const btn = viewButtonAtRowIfExists(nextRow);
+            if (!btn) return;
+            const nextUrl = getViewLinkFromViewButton(btn);
             window.open(nextUrl, '_self');
         };
 
@@ -154,10 +153,6 @@
         let insertLink = (emoji, content, onclickFunction) => {
             const group = document.createElement('div');
             group.classList.add("form-group");
-                const head = document.createElement('div');
-                head.classList.add("col-sm-3");
-                head.classList.add("control-label");
-                group.appendChild(head);
                 const tail = document.createElement('div');
                 tail.classList.add("col-sm-9");
                     const box = document.createElement('div');
@@ -173,11 +168,14 @@
                         box.appendChild(link);
                     tail.appendChild(box);
                 group.appendChild(tail);
-            commentTemplatesElement.insertBefore(group, bottomButtons);
+            commentTemplatesElement.appendChild(group);
         };
 
         let clearComments = () => commentTextArea.value = "";
 
+        const title = document.createElement('div');
+        title.textContent = 'Bemerkungen hinzufügen oder entfernen:';
+        commentTemplatesElement.appendChild(title);
         insertLink("❌", "*Leere*", clearComments);
         for (let i = 0; i < commentTemplates.length; i++) {
             const value = commentTemplates[i];
