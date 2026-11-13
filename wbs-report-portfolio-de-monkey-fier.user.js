@@ -11,16 +11,21 @@
     ////////////////////////////// START config
     // Autofill templates that can be toggled on and off for comments:
     const commentTemplates = [
-        "Montag:",
-        "Dienstag:",
-        "Mittwoch:",
-        "Donnerstag:",
-        "Freitag:",
-        "Bitte 3-stellige Wochennr. (00X) setzen.",
+        "Bitte 3-stellige Berichtsnummer (00X) setzen.",
         "Bitte Abschnitt benennen.",
+        "Abschnitt und Berichtsnummer sind vertauscht.",
         "Bitte min. 3 Einträge á Tag.",
-        "FPAs bitte etwas ausführen.",
         "Bitte keine Einträge am Wochenende.",
+        "Bitte 0 St/UE für Tage ohne Anwesenheit eintragen.",
+        "Montag: ",
+        "Dienstag: ",
+        "Mittwoch: ",
+        "Donnerstag: ",
+        "Freitag: ",
+        "FPAs: ",
+        "Bitte etwas mehr ausführen.",
+        "Interpunktion,",
+        "Groß- und Kleinschreibung,",
         "Danke :)",
     ];
 
